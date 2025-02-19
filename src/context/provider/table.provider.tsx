@@ -1,4 +1,4 @@
-import { createContext } from "vm";
+import { createContext } from "react";
 import { TPropsTableContext } from "./type";
 
 const TableContext = createContext(null);
