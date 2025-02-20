@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Table } from "../../custom-table/table/table";
+import { Table } from "../custom-table/table/table";
 
 interface IDataTableProps<T> {
   columns: ColumnDef<T>[];

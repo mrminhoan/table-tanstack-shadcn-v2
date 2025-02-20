@@ -4,7 +4,7 @@ import {
 } from "@tanstack/react-table";
 import { MonitorModel } from "@/models/class/monitor.model";
 import { MockData } from "@/constants/mock";
-import DataTable from "@/components/custom/data-table/data-table/data-table";
+import DataTable from "@/components/custom/data-table/data-table";
 function MonitorTable() {
   const columns = React.useMemo<ColumnDef<MonitorModel>[]>(
     () => [
@@ -13,6 +13,7 @@ function MonitorTable() {
       },
       {
         accessorKey: "method",
+        header: "Method"
       },
       {
         accessorKey: "host",
