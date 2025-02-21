@@ -8,9 +8,9 @@ const TableCell = React.forwardRef<
     HTMLTableCellElement
   >
 >((props, ref) => {
-  const { className, children } = props;
+  const { className, children, ...rest } = props;
   return (
-    <td ref={ref} className={cn("", className)}>
+    <td ref={ref} className={cn("", className)} {...rest}>
       {children}
     </td>
   );

@@ -22,7 +22,7 @@ function DataTable<T>(props: IDataTableProps<T>) {
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
-
+    columnResizeMode: "onChange",
     // Sorting config:
     manualSorting: true,
   });
@@ -35,7 +35,11 @@ function DataTable<T>(props: IDataTableProps<T>) {
       colSize[`--col-size-${columnSize}`] = `${columnSize}px`;
     });
     return colSize;
-  }, []);
+  }, [
+    useTable.getState().columnSizingInfo,
+    useTable.getState().columnSizing,
+    useTable.getState().columnVisibility,
+  ]);
 
   return (
     <>
@@ -50,7 +54,11 @@ function DataTable<T>(props: IDataTableProps<T>) {
                       <Table.Header
                         key={header.id}
                         colSpan={header.colSpan}
-                        style={{ width: `var(--col-size-${header.getSize()})` }}
+                        style={{
+                          width: `var(--col-size-${header.getSize()})`,
+                          maxWidth: `var(--col-size-${header.getSize()})`,
+                        }}
+                        className="relative "
                       >
                         {header.isPlaceholder ? null : (
                           <TableDataCellHeader header={header} />
@@ -64,14 +72,16 @@ function DataTable<T>(props: IDataTableProps<T>) {
             <Table.Body>
               {useTable.getRowModel().rows.map((row) => {
                 return (
-                  <Table.Row key={row.id}>
+                  <Table.Row key={row.id} className="">
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <Table.Cell
                           key={cell.id}
                           style={{
                             width: `var(--col-size-${cell.column.getSize()})`,
+                            maxWidth: `var(--col-size-${cell.column.getSize()})`,
                           }}
+                          className="px-2 py-2 border-b border-x border-border text-sm truncate"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

@@ -14,7 +14,7 @@ function MonitorTable() {
           iconSort: <ArrowUpDown />,
         },
         header: "Uuid",
-        size: 500
+        size: 250
       },
       {
         accessorKey: "method",
@@ -27,6 +27,7 @@ function MonitorTable() {
       {
         accessorKey: "host",
         header: "Host",
+        // size: 400
       },
       {
         accessorKey: "pathname",
