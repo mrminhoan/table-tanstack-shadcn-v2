@@ -14,7 +14,10 @@ export const TableHead = React.forwardRef<
   return (
     <thead
       ref={ref}
-      className={cn("[&_tr: border-b], w-full", className)}
+      className={cn(
+        "[&_tr]:border-b  w-full text-muted-foreground bg-muted/50 overflow-hidden",
+        className
+      )}
       {...rest}
     >
       {children}

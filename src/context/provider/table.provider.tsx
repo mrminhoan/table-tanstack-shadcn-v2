@@ -4,10 +4,9 @@ import { TPropsTableContext } from "./type";
 const TableContext = createContext(null);
 
 export const TableProvider = <T,>(props?: TPropsTableContext<T>) => {
-  const { children, columns, data } = props;
+  const { children, useTable } = props;
   const value = {
-    columns,
-    data,
+    useTable,
   };
   return (
     <TableContext.Provider value={value}>{children}</TableContext.Provider>

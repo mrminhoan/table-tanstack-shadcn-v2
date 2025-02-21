@@ -13,7 +13,7 @@ interface ITableProps extends React.HTMLProps<HTMLTableElement> {
 const Table = React.forwardRef<HTMLTableElement, ITableProps>((props, ref) => {
   const { classNameContainer, className, children, ...rest } = props;
   return (
-    <div className={cn("w-full", classNameContainer)}>
+    <div className={cn("w-full overflow-auto", classNameContainer)}>
       <table ref={ref} {...rest} className={cn("w-full", className)}>
         {children}
       </table>
