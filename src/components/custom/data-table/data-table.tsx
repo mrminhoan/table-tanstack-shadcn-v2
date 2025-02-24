@@ -8,7 +8,7 @@ import {
 import { Table } from "../custom-table/table/table";
 import TableDataCellHeader from "../custom-table/table-data-cell-header/table-data-cell-header";
 import React from "react";
-import { cn } from "@/lib/utils";
+import { Pagination } from "@mantine/core";
 
 interface IDataTableProps<T> {
   columns: ColumnDef<T>[];
@@ -58,7 +58,7 @@ function DataTable<T>(props: IDataTableProps<T>) {
                           width: `var(--col-size-${header.getSize()})`,
                           maxWidth: `var(--col-size-${header.getSize()})`,
                         }}
-                        className="relative "
+                        className="relative"
                       >
                         {header.isPlaceholder ? null : (
                           <TableDataCellHeader header={header} />
@@ -81,7 +81,7 @@ function DataTable<T>(props: IDataTableProps<T>) {
                             width: `var(--col-size-${cell.column.getSize()})`,
                             maxWidth: `var(--col-size-${cell.column.getSize()})`,
                           }}
-                          className="px-2 py-2 border-b border-x border-border text-sm truncate"
+                          className="px-2 py-3 border-b border-x border-border text-sm truncate"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
@@ -95,6 +95,8 @@ function DataTable<T>(props: IDataTableProps<T>) {
               })}
             </Table.Body>
           </Table>
+
+          <Pagination total={20} siblings={1} defaultValue={10} onChange={value => console.log(value)}/>
         </div>
       </TableProvider>
     </>
