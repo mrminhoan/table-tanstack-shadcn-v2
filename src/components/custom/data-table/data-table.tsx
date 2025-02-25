@@ -8,16 +8,18 @@ import {
 import { Table } from "../custom-table/table/table";
 import TableDataCellHeader from "../custom-table/table-data-cell-header/table-data-cell-header";
 import React from "react";
-import { Pagination } from "@mantine/core";
+import CustomPagination from "../custom-pagination/custom-pagination";
+import { BaseSearchModel } from "@/models/class/base-search.model";
 
 interface IDataTableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
+  paramSearch: BaseSearchModel;
+  onTableChange: (value: BaseSearchModel) => void;
 }
 
 function DataTable<T>(props: IDataTableProps<T>) {
-  const { columns, data } = props;
-
+  const { columns, data, paramSearch, onTableChange } = props;
   const useTable = useReactTable({
     columns,
     data,
@@ -43,8 +45,12 @@ function DataTable<T>(props: IDataTableProps<T>) {
 
   return (
     <>
-      <TableProvider useTable={useTable}>
-        <div style={{ ...columnSizeVars }} className="w-max">
+      <TableProvider
+        useTable={useTable}
+        paramSearch={paramSearch}
+        onTableChange={onTableChange}
+      >
+        <div style={{ ...columnSizeVars }}>
           <Table>
             <Table.Head>
               {useTable.getHeaderGroups().map((headerGroup) => (
@@ -95,9 +101,8 @@ function DataTable<T>(props: IDataTableProps<T>) {
               })}
             </Table.Body>
           </Table>
-
-          <Pagination total={20} siblings={1} defaultValue={10} onChange={value => console.log(value)}/>
         </div>
+        <CustomPagination />
       </TableProvider>
     </>
   );

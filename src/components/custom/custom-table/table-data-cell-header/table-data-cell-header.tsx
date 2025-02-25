@@ -66,7 +66,7 @@ function TableDataCellHeader<T>(props: IProps<T>) {
           onMouseDown={header.getResizeHandler()}
           onTouchStart={header.getResizeHandler()}
           className={cn(
-            "absolute top-0 h-full w-1 cursor-col-resize user-select-none touch-none right-0 z-10 flex justify-center bg-[rgba(0,_0,_0,_0.5)] opacity-0 hover:opacity-100"
+            "absolute top-0 h-full w-1 cursor-col-resize select-none touch-none right-0 z-10 flex justify-center bg-[rgba(0,_0,_0,_0.5)] opacity-0 hover:opacity-100"
             // "before:absolute before:w-px before:inset-y-0 before:bg-border before:translate-x-px"
           )}
         />

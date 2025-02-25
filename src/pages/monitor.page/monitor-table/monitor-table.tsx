@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MonitorModel } from "@/models/class/monitor.model";
 import { MockData } from "@/constants/mock";
@@ -7,7 +7,13 @@ import { ArrowUpDown, Minus } from "lucide-react";
 import { getLevelStyleColor } from "@/lib/get-level-style-color";
 import { getStatusColor } from "@/lib/get-status-color";
 import { regions } from "@/constants";
+import { BaseSearchModel } from "@/models/class/base-search.model";
+import { toast } from "sonner";
+
 function MonitorTable() {
+  const [paramSearch, setParamSearch] = useState<BaseSearchModel>(
+    new BaseSearchModel()
+  );
   const columns = React.useMemo<ColumnDef<MonitorModel>[]>(
     () => [
       {
@@ -17,7 +23,7 @@ function MonitorTable() {
           iconSort: <ArrowUpDown />,
         },
         header: "Request ID",
-        size: 250,
+        size: 1050,
       },
       {
         accessorKey: "method",
@@ -126,9 +132,27 @@ function MonitorTable() {
     );
   }
 
+  useEffect(() => {
+    toast("Params Search has been changed", {
+      description: JSON.stringify(paramSearch),
+    });
+  }, [paramSearch]);
+
+  const handleParamSearchChange = (value: BaseSearchModel) => {
+    setParamSearch((prev) => ({
+      ...prev,
+      ...value,
+    }));
+  };
+
   return (
     <div>
-      <DataTable columns={columns} data={MockData} />
+      <DataTable
+        columns={columns}
+        data={MockData}
+        paramSearch={paramSearch}
+        onTableChange={handleParamSearchChange}
+      />
     </div>
   );
 }

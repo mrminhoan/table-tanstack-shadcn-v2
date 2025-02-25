@@ -14,7 +14,7 @@ const Table = React.forwardRef<HTMLTableElement, ITableProps>((props, ref) => {
   const { classNameContainer, className, children, ...rest } = props;
   return (
     <div className={cn("w-full overflow-auto", classNameContainer)}>
-      <table ref={ref} {...rest} className={cn("w-full", className)}>
+      <table ref={ref} {...rest} className={cn("w-max", className)}>
         {children}
       </table>
     </div>
