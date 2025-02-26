@@ -20,10 +20,10 @@ function MonitorTable() {
         accessorKey: "uuid",
         meta: {
           sorter: true,
-          iconSort: <ArrowUpDown />,
+          // iconSort: <ArrowUpDown />,
         },
         header: "Request ID",
-        size: 1050,
+        size: 400,
       },
       {
         accessorKey: "method",
@@ -31,7 +31,6 @@ function MonitorTable() {
         meta: {
           sorter: true,
         },
-        size: 550,
       },
       {
         accessorKey: "host",
@@ -138,7 +137,7 @@ function MonitorTable() {
     });
   }, [paramSearch]);
 
-  const handleParamSearchChange = (value: BaseSearchModel) => {
+  const handleParamSearchChange = (value: Partial<BaseSearchModel>) => {
     setParamSearch((prev) => ({
       ...prev,
       ...value,

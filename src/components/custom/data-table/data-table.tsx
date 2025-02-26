@@ -1,4 +1,4 @@
-import { TableProvider } from "@/context/provider/table.provider";
+import { DataTableProvider } from "@/context/provider/data-table.provider";
 import {
   ColumnDef,
   flexRender,
@@ -7,26 +7,37 @@ import {
 } from "@tanstack/react-table";
 import { Table } from "../custom-table/table/table";
 import TableDataCellHeader from "../custom-table/table-data-cell-header/table-data-cell-header";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomPagination from "../custom-pagination/custom-pagination";
 import { BaseSearchModel } from "@/models/class/base-search.model";
+import { TableHeaderProvider } from "@/context/provider/table-header.provider";
+import { UseSort } from "@/hooks";
 
 interface IDataTableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
   paramSearch: BaseSearchModel;
-  onTableChange: (value: BaseSearchModel) => void;
+  onTableChange: (value: Partial<BaseSearchModel>) => void;
 }
 
 function DataTable<T>(props: IDataTableProps<T>) {
   const { columns, data, paramSearch, onTableChange } = props;
+
+  const { sorting, setSorting, keySort, sortType } = UseSort();
+
   const useTable = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange",
-    // Sorting config:
-    manualSorting: true,
+
+    // manualSorting: true,
+    onSortingChange: setSorting,
+    sortDescFirst: true,
+
+    state: {
+      sorting,
+    },
   });
 
   const columnSizeVars = React.useMemo(() => {
@@ -43,9 +54,16 @@ function DataTable<T>(props: IDataTableProps<T>) {
     useTable.getState().columnVisibility,
   ]);
 
+  useEffect(() => {
+    onTableChange({
+      keySort,
+      sortType,
+    });
+  }, [keySort, sortType]);
+
   return (
     <>
-      <TableProvider
+      <DataTableProvider
         useTable={useTable}
         paramSearch={paramSearch}
         onTableChange={onTableChange}
@@ -56,21 +74,26 @@ function DataTable<T>(props: IDataTableProps<T>) {
               {useTable.getHeaderGroups().map((headerGroup) => (
                 <Table.Row key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
-                    return (
-                      <Table.Header
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          width: `var(--col-size-${header.getSize()})`,
-                          maxWidth: `var(--col-size-${header.getSize()})`,
-                        }}
-                        className="relative"
-                      >
-                        {header.isPlaceholder ? null : (
-                          <TableDataCellHeader header={header} />
-                        )}
-                      </Table.Header>
-                    );
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const memoizedHeaderProvider = React.useMemo(() => {
+                      return (
+                        <TableHeaderProvider header={header} key={header.id}>
+                          <Table.Header
+                            colSpan={header.colSpan}
+                            style={{
+                              width: `var(--col-size-${header.getSize()})`,
+                              maxWidth: `var(--col-size-${header.getSize()})`,
+                            }}
+                            className="relative"
+                          >
+                            {header.isPlaceholder ? null : (
+                              <TableDataCellHeader />
+                            )}
+                          </Table.Header>
+                        </TableHeaderProvider>
+                      );
+                    }, [{ ...header }]);
+                    return memoizedHeaderProvider;
                   })}
                 </Table.Row>
               ))}
@@ -103,7 +126,7 @@ function DataTable<T>(props: IDataTableProps<T>) {
           </Table>
         </div>
         <CustomPagination />
-      </TableProvider>
+      </DataTableProvider>
     </>
   );
 }

@@ -27,3 +27,8 @@ export const flags: Record<string, string> = {
   iad: "🇺🇸",
   syd: "🇦🇺",
 };
+
+export const SORT_TYPE = {
+  ASC: "asc",
+  DESC: "desc",
+} as const

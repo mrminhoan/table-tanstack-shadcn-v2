@@ -7,10 +7,10 @@ import { MantineProvider } from "@mantine/core";
 import { Toaster } from "./components/ui/sonner.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <MantineProvider>
       <App />
       <Toaster />
     </MantineProvider>
-  </StrictMode>
+  // </StrictMode>
 );

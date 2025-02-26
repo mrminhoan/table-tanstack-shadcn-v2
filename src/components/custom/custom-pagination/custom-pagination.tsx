@@ -10,14 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PAGINATION } from "@/constants/paginations";
-import { TableContext } from "@/context/provider/table.provider";
+import { DataTableContext } from "@/context/provider/data-table.provider";
 
 interface IProps {
   classNameContainer?: string;
   totalItems?: number;
 }
 function CustomPagination(props: IProps) {
-  const { paramSearch, onTableChange } = useContext(TableContext);
+  const { paramSearch, onTableChange } = useContext(DataTableContext);
   // eslint-disable-next-line prefer-const
   let { limit, currentPage } = paramSearch;
   const { classNameContainer, totalItems = 100 } = props;

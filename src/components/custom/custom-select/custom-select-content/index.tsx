@@ -16,7 +16,7 @@ function CustomSelectContent(props: IProps) {
       <SelectContent>
         {data?.map((item) => {
           return (
-            <SelectItem value={item.value} className={classNameItem}>
+            <SelectItem value={item.value} className={classNameItem} key={item.value}>
               {item.label}
             </SelectItem>
           );
