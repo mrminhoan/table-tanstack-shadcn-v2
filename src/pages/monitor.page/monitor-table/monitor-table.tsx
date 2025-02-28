@@ -10,6 +10,14 @@ import { regions } from "@/constants";
 import { BaseSearchModel } from "@/models/class/base-search.model";
 import { toast } from "sonner";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Checkbox } from "@/components/ui/checkbox";
+
 function MonitorTable() {
   const [paramSearch, setParamSearch] = useState<BaseSearchModel>(
     new BaseSearchModel()
@@ -21,25 +29,65 @@ function MonitorTable() {
         meta: {
           sorter: true,
           // iconSort: <ArrowUpDown />,
+          canSearch: true,
+          searchOptions: {
+            label: "Request ID",
+            type: "input",
+          },
         },
         header: "Request ID",
-        size: 400,
       },
       {
         accessorKey: "method",
         header: "Method",
         meta: {
           sorter: true,
+          canSearch: true,
+          searchOptions: {
+            label: "Method",
+            type: "checkbox",
+            options: [
+              {
+                label: "POST",
+                value: "post",
+              },
+              {
+                label: "GET",
+                value: "get",
+              },
+              {
+                label: "PUT",
+                value: "put",
+              },
+              {
+                label: "DELETE",
+                value: "delete",
+              },
+            ],
+          },
         },
       },
       {
         accessorKey: "host",
         header: "Host",
-        // size: 400
+        meta: {
+          canSearch: true,
+          searchOptions: {
+            label: "Host",
+            type: "input",
+          },
+        },
       },
       {
         accessorKey: "pathname",
         header: "Path name",
+        meta: {
+          canSearch: true,
+          searchOptions: {
+            label: "Path Name",
+            type: "input",
+          },
+        },
       },
       {
         accessorKey: "level",
@@ -61,7 +109,6 @@ function MonitorTable() {
       {
         accessorKey: "latency",
         header: "Latency",
-        size: 550,
         cell: ({ row }) => {
           return <LatencyDisplay value={row.getValue("latency")} />;
         },
@@ -69,7 +116,6 @@ function MonitorTable() {
       {
         accessorKey: "status",
         header: "Status",
-        size: 550,
         cell: ({ row }) => {
           const value = row.getValue("status");
           if (typeof value === "undefined") {
@@ -114,7 +160,6 @@ function MonitorTable() {
       {
         accessorKey: "date",
         header: "Date",
-        size: 400,
       },
     ],
     []
@@ -152,6 +197,39 @@ function MonitorTable() {
         paramSearch={paramSearch}
         onTableChange={handleParamSearchChange}
       />
+
+      {/* <Accordion type="multiple">
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion> */}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { DataTableProvider } from "@/context/provider/data-table.provider";
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -12,6 +13,8 @@ import CustomPagination from "../custom-pagination/custom-pagination";
 import { BaseSearchModel } from "@/models/class/base-search.model";
 import { TableHeaderProvider } from "@/context/provider/table-header.provider";
 import { UseSort } from "@/hooks";
+import { Input } from "@/components/ui/input";
+import FilterController from "../custom-table/filter-controller/filter-controller";
 
 interface IDataTableProps<T> {
   columns: ColumnDef<T>[];
@@ -25,18 +28,24 @@ function DataTable<T>(props: IDataTableProps<T>) {
 
   const { sorting, setSorting, keySort, sortType } = UseSort();
 
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const useTable = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange",
 
-    // manualSorting: true,
+    manualSorting: true,
     onSortingChange: setSorting,
     sortDescFirst: true,
 
+    manualFiltering: true,
+    onColumnFiltersChange: setColumnFilters,
+
     state: {
       sorting,
+      columnFilters,
     },
   });
 
@@ -61,6 +70,8 @@ function DataTable<T>(props: IDataTableProps<T>) {
     });
   }, [keySort, sortType]);
 
+  console.log({ columnFilters });
+
   return (
     <>
       <DataTableProvider
@@ -68,9 +79,10 @@ function DataTable<T>(props: IDataTableProps<T>) {
         paramSearch={paramSearch}
         onTableChange={onTableChange}
       >
+        <FilterController />
         <div style={{ ...columnSizeVars }}>
-          <Table>
-            <Table.Head>
+          <Table className="max-h-screen">
+            <Table.Head className="">
               {useTable.getHeaderGroups().map((headerGroup) => (
                 <Table.Row key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -89,6 +101,13 @@ function DataTable<T>(props: IDataTableProps<T>) {
                             {header.isPlaceholder ? null : (
                               <TableDataCellHeader />
                             )}
+
+                            <Input
+                              placeholder="Search..."
+                              onChange={(e) =>
+                                header.column.setFilterValue(e.target.value)
+                              }
+                            />
                           </Table.Header>
                         </TableHeaderProvider>
                       );
